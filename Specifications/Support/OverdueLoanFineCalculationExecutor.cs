@@ -12,7 +12,21 @@ namespace Specifications.Support
 
         public decimal CalculateOverdueFine()
         {
-            return 0;
+            return CalculateOverdueFine(DateTime.Today);
+        }
+
+
+        private const int GracePeriodDays = 2;
+        private const decimal FinePerDay = 0.25m;
+
+        private decimal CalculateOverdueFine(DateTime targetDate)
+        {
+            var daysOverdue = (targetDate - _loanDueDate).Days;
+            if (daysOverdue <= GracePeriodDays)
+            {
+                return 0;
+            }
+            return daysOverdue*FinePerDay;
         }
     }
 }

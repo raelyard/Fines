@@ -70,6 +70,10 @@ namespace Specifications.Features
         [NUnit.Framework.TestCaseAttribute("0", "0.00", null)]
         [NUnit.Framework.TestCaseAttribute("1", "0.00", null)]
         [NUnit.Framework.TestCaseAttribute("2", "0.00", null)]
+        [NUnit.Framework.TestCaseAttribute("3", "0.75", null)]
+        [NUnit.Framework.TestCaseAttribute("4", "1.00", null)]
+        [NUnit.Framework.TestCaseAttribute("10", "2.50", null)]
+        [NUnit.Framework.TestCaseAttribute("29", "7.25", null)]
         public virtual void CalculateFinesForOverdueDaysLessThanReplacementCostDeadline(string days, string fine, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Fines For Overdue Days Less Than Replacement Cost Deadline", exampleTags);
