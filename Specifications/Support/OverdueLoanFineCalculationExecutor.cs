@@ -4,10 +4,10 @@ namespace Specifications.Support
 {
     public class OverdueLoanFineCalculationExecutor
     {
-        private DateTime _loanDueDate;
-        public void SetLoanOverdueContext(int days)
+        public void SetLoanOverdueContext(int days, decimal replacementValue)
         {
             _loanDueDate = DateTime.Today.AddDays(-days);
+            _replacementValue = replacementValue;
         }
 
         public decimal CalculateOverdueFine()
@@ -18,6 +18,10 @@ namespace Specifications.Support
 
         private const int GracePeriodDays = 2;
         private const decimal FinePerDay = 0.25m;
+        private const decimal ReplacementTimeframeDays = 30;
+
+        private DateTime _loanDueDate;
+        private decimal _replacementValue;
 
         private decimal CalculateOverdueFine(DateTime targetDate)
         {
@@ -26,7 +30,11 @@ namespace Specifications.Support
             {
                 return 0;
             }
-            return daysOverdue*FinePerDay;
+            if (daysOverdue >= ReplacementTimeframeDays)
+            {
+                return _replacementValue;
+            }
+            return daysOverdue * FinePerDay;
         }
     }
 }

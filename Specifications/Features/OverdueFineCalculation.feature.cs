@@ -88,6 +88,32 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Calculate Fines For Overdue Days At Or Beyond Replacement Cost Deadline")]
+        [NUnit.Framework.TestCaseAttribute("30", "3.00", "3.00", null)]
+        [NUnit.Framework.TestCaseAttribute("30", "9.95", "9.95", null)]
+        [NUnit.Framework.TestCaseAttribute("30", "1000000.00", "1000000.00", null)]
+        [NUnit.Framework.TestCaseAttribute("60", "3.00", "3.00", null)]
+        [NUnit.Framework.TestCaseAttribute("60", "9.95", "9.95", null)]
+        [NUnit.Framework.TestCaseAttribute("60", "1000000.00", "1000000.00", null)]
+        [NUnit.Framework.TestCaseAttribute("90", "3.00", "3.00", null)]
+        [NUnit.Framework.TestCaseAttribute("90", "9.95", "9.95", null)]
+        [NUnit.Framework.TestCaseAttribute("90", "1000000.00", "1000000.00", null)]
+        public virtual void CalculateFinesForOverdueDaysAtOrBeyondReplacementCostDeadline(string days, string replacementValue, string fine, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Fines For Overdue Days At Or Beyond Replacement Cost Deadline", exampleTags);
+#line 21
+this.ScenarioSetup(scenarioInfo);
+#line 22
+ testRunner.Given(string.Format("A loan for an item with replacement value ${0} is overdue by {1} days", replacementValue, days), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 23
+ testRunner.When("I calculate the overdue fine", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 24
+ testRunner.Then(string.Format("I should see a fine of ${0}", fine), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

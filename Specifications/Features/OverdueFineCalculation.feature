@@ -17,3 +17,20 @@ Scenario Outline: Calculate Fines For Overdue Days Less Than Replacement Cost De
 	| 4    | 1.00 |
 	| 10   | 2.50 |
 	| 29   | 7.25 |
+	
+Scenario Outline: Calculate Fines For Overdue Days At Or Beyond Replacement Cost Deadline
+	Given A loan for an item with replacement value $<replacementValue> is overdue by <days> days
+	When I calculate the overdue fine
+	Then I should see a fine of $<fine>
+
+	Examples:
+	| days | replacementValue | fine       |
+	| 30   | 3.00             | 3.00       |
+	| 30   | 9.95             | 9.95       |
+	| 30   | 1000000.00       | 1000000.00 |
+	| 60   | 3.00             | 3.00       |
+	| 60   | 9.95             | 9.95       |
+	| 60   | 1000000.00       | 1000000.00 |
+	| 90   | 3.00             | 3.00       |
+	| 90   | 9.95             | 9.95       |
+	| 90   | 1000000.00       | 1000000.00 |

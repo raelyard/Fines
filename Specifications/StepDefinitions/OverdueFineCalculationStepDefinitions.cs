@@ -7,6 +7,8 @@ namespace Specifications.StepDefinitions
     [Binding]
     public class OverdueFineCalculationStepDefinitions
     {
+        private const decimal TypeicalReplacementValue = 9.95m;
+
         private readonly OverdueLoanFineCalculationExecutor _overdueLoanFineLoanFineCalculationExecutor;
         private decimal _calculatedFine;
 
@@ -18,7 +20,13 @@ namespace Specifications.StepDefinitions
         [Given(@"A loan is overdue by (.*) days")]
         public void GivenALoanIsOverdueByDays(int days)
         {
-            _overdueLoanFineLoanFineCalculationExecutor.SetLoanOverdueContext(days);
+            _overdueLoanFineLoanFineCalculationExecutor.SetLoanOverdueContext(days, TypeicalReplacementValue);
+        }
+
+        [Given(@"A loan for an item with replacement value \$(.*) is overdue by (.*) days")]
+        public void GivenALoanForAnItemWithReplacementValueIsOverdueByDays(decimal replacementValue, int days)
+        {
+            _overdueLoanFineLoanFineCalculationExecutor.SetLoanOverdueContext(days, replacementValue);
         }
 
         [When(@"I calculate the overdue fine")]
