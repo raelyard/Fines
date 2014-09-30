@@ -9,5 +9,10 @@ namespace Specifications.Support
         {
             _loanDueDate = DateTime.Today;
         }
+
+        public decimal CalculateOverdueFine()
+        {
+            return 0;
+        }
     }
 }
