@@ -34,7 +34,7 @@ namespace Specifications.Support
             {
                 return _replacementValue;
             }
-            return daysOverdue * FinePerDay;
+            return Math.Min(daysOverdue * FinePerDay, _replacementValue);
         }
     }
 }

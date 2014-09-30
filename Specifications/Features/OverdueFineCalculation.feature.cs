@@ -114,6 +114,26 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Calculate Fines for Lower Valued Items With Ceiling on Fine At Replacement Value")]
+        [NUnit.Framework.TestCaseAttribute("11", "3.00", "2.75", null)]
+        [NUnit.Framework.TestCaseAttribute("13", "3.00", "3.00", null)]
+        [NUnit.Framework.TestCaseAttribute("29", "3.00", "3.00", null)]
+        public virtual void CalculateFinesForLowerValuedItemsWithCeilingOnFineAtReplacementValue(string days, string replacementValue, string fine, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Fines for Lower Valued Items With Ceiling on Fine At Replacement Value", exampleTags);
+#line 39
+this.ScenarioSetup(scenarioInfo);
+#line 40
+ testRunner.Given(string.Format("A loan for an item with replacement value ${0} is overdue by {1} days", replacementValue, days), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 41
+ testRunner.When("I calculate the overdue fine", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 42
+ testRunner.Then(string.Format("I should see a fine of ${0}", fine), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
