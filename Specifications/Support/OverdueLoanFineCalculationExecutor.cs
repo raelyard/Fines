@@ -5,9 +5,9 @@ namespace Specifications.Support
     public class OverdueLoanFineCalculationExecutor
     {
         private DateTime _loanDueDate;
-        public void SetLoanOverdueContext()
+        public void SetLoanOverdueContext(int days)
         {
-            _loanDueDate = DateTime.Today;
+            _loanDueDate = DateTime.Today.AddDays(-days);
         }
 
         public decimal CalculateOverdueFine()

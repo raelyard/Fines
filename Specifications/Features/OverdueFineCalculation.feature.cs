@@ -67,17 +67,19 @@ namespace Specifications.Features
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Calculate Fines For Overdue Days Less Than Replacement Cost Deadline")]
-        public virtual void CalculateFinesForOverdueDaysLessThanReplacementCostDeadline()
+        [NUnit.Framework.TestCaseAttribute("0", "0.00", null)]
+        [NUnit.Framework.TestCaseAttribute("1", "0.00", null)]
+        public virtual void CalculateFinesForOverdueDaysLessThanReplacementCostDeadline(string days, string fine, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Fines For Overdue Days Less Than Replacement Cost Deadline", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Fines For Overdue Days Less Than Replacement Cost Deadline", exampleTags);
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("A loan is overdue by 0 days", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("A loan is overdue by {0} days", days), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
  testRunner.When("I calculate the overdue fine", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
- testRunner.Then("I should see a fine of $0.00", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("I should see a fine of ${0}", fine), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

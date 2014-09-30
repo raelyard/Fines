@@ -3,7 +3,12 @@
 	As a library operator
 	I want to charge fines for overdue media
 
-Scenario: Calculate Fines For Overdue Days Less Than Replacement Cost Deadline
-	Given A loan is overdue by 0 days
+Scenario Outline: Calculate Fines For Overdue Days Less Than Replacement Cost Deadline
+	Given A loan is overdue by <days> days
 	When I calculate the overdue fine
-	Then I should see a fine of $0.00
+	Then I should see a fine of $<fine>
+
+	Examples:
+	| days | fine |
+	| 0    | 0.00 |
+	| 1    | 0.00 |

@@ -15,10 +15,10 @@ namespace Specifications.StepDefinitions
             _overdueLoanFineLoanFineCalculationExecutor = overdueLoanFineLoanFineCalculationExecutor;
         }
 
-        [Given(@"A loan is overdue by 0 days")]
-        public void GivenALoanIsOverdueByZeroDays()
+        [Given(@"A loan is overdue by (.*) days")]
+        public void GivenALoanIsOverdueByDays(int days)
         {
-            _overdueLoanFineLoanFineCalculationExecutor.SetLoanOverdueContext();
+            _overdueLoanFineLoanFineCalculationExecutor.SetLoanOverdueContext(days);
         }
 
         [When(@"I calculate the overdue fine")]
@@ -27,10 +27,10 @@ namespace Specifications.StepDefinitions
             _calculatedFine = _overdueLoanFineLoanFineCalculationExecutor.CalculateOverdueFine();
         }
 
-        [Then(@"I should see a fine of \$0.00")]
-        public void ThenIShouldSeeAFineOf()
+        [Then(@"I should see a fine of \$(.*)")]
+        public void ThenIShouldSeeAFineOf(decimal expectedFine)
         {
-            _calculatedFine.ShouldEqual(0);
+            _calculatedFine.ShouldEqual(expectedFine);
         }
     }
 }
