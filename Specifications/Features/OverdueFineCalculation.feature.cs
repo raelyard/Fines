@@ -69,6 +69,7 @@ namespace Specifications.Features
         [NUnit.Framework.DescriptionAttribute("Calculate Fines For Overdue Days Less Than Replacement Cost Deadline")]
         [NUnit.Framework.TestCaseAttribute("0", "0.00", null)]
         [NUnit.Framework.TestCaseAttribute("1", "0.00", null)]
+        [NUnit.Framework.TestCaseAttribute("2", "0.00", null)]
         public virtual void CalculateFinesForOverdueDaysLessThanReplacementCostDeadline(string days, string fine, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Fines For Overdue Days Less Than Replacement Cost Deadline", exampleTags);

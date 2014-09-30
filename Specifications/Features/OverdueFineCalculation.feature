@@ -12,3 +12,4 @@ Scenario Outline: Calculate Fines For Overdue Days Less Than Replacement Cost De
 	| days | fine |
 	| 0    | 0.00 |
 	| 1    | 0.00 |
+	| 2    | 0.00 |
