@@ -26,6 +26,12 @@ namespace MediaLoanLIbrary.Fines.Tests.Common.Bus
             ExecuteEventsDefinitionOnType(typeof(DomainModel.SomethingHappendEvent)).ShouldBeFalse();
         }
 
+        [Test]
+        public void ShouldNotMatchOnEventwithoutNamespace()
+        {
+            ExecuteEventsDefinitionOnType(typeof(SomethingWithoutNamespaceHappendEvent)).ShouldBeFalse();
+        }
+
         private bool ExecuteEventsDefinitionOnType(Type type)
         {
             return UnobtrusiveMessageConventions.EventsDefinition(type);
@@ -39,8 +45,9 @@ namespace MediaLoanLIbrary.Fines.Tests.Common.Bus
             get
             {
                 return type =>
-                     type.Namespace.Contains(".PublicEvents") &&
-                     type.Name.EndsWith("Event");
+                    type.Namespace != null &&
+                    type.Namespace.Contains(".PublicEvents") &&
+                    type.Name.EndsWith("Event");
             }
         }
     }
@@ -62,4 +69,8 @@ namespace MediaLoanLIbrary.Fines.DomainModel
     public interface SomethingHappendEvent
     {
     }
+}
+
+public interface SomethingWithoutNamespaceHappendEvent
+{
 }
