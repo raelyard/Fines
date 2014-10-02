@@ -13,13 +13,19 @@ namespace MediaLoanLIbrary.Fines.Tests.Common.Bus
         {
             UnobtrusiveMessageConventions.EventsDefinition(typeof(SomethingHappendEvent)).ShouldBeTrue();
         }
+
+        [Test]
+        public void ShouldNotMatchOnPublicEventTypeNotEndingWithEvent()
+        {
+            UnobtrusiveMessageConventions.EventsDefinition(typeof(SomethingHappendEventDude)).ShouldBeFalse();
+        }
     }
 
     public class UnobtrusiveMessageConventions
     {
         public static Func<Type, bool> EventsDefinition
         {
-            get { return type => true; }
+            get { return type => type.Name.EndsWith("Event"); }
         }
     }
 }
@@ -27,6 +33,10 @@ namespace MediaLoanLIbrary.Fines.Tests.Common.Bus
 namespace MediaLoanLIbrary.Fines.PublicEvents
 {
     public interface SomethingHappendEvent
+    {
+    }
+
+    public interface SomethingHappendEventDude
     {
     }
 }
