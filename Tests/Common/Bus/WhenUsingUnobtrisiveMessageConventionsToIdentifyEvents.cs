@@ -21,6 +21,18 @@ namespace MediaLoanLibrary.Fines.Tests.Common.Bus
         }
 
         [Test]
+        public void ShouldMatchOnInternalFinesEventType()
+        {
+            ExecuteEventsDefinitionOnType(typeof(DomainModel.Events.SomethingHappendEvent)).ShouldBeTrue();
+        }
+
+        [Test]
+        public void ShouldNotMatchOnInternalFinesEventTypeNotEndingWithEvent()
+        {
+            ExecuteEventsDefinitionOnType(typeof(DomainModel.Events.SomethingHappendEventDude)).ShouldBeFalse();
+        }
+
+        [Test]
         public void ShouldNotMatchOnEventOutsideEventNamespace()
         {
             ExecuteEventsDefinitionOnType(typeof(DomainModel.SomethingHappendEvent)).ShouldBeFalse();
@@ -53,7 +65,10 @@ namespace MediaLoanLibrary.Fines.Tests.Common.Bus
                 return type =>
                     type.Namespace != null &&
                     type.Namespace.StartsWith("MediaLoanLibrary.") &&
-                    type.Namespace.Contains(".PublicEvents") &&
+                    (
+                        type.Namespace.Contains(".PublicEvents") ||
+                        type.Namespace.Contains(".Events")
+                    ) &&
                     type.Name.EndsWith("Event");
             }
         }
@@ -61,6 +76,17 @@ namespace MediaLoanLibrary.Fines.Tests.Common.Bus
 }
 
 namespace MediaLoanLibrary.Fines.PublicEvents
+{
+    public interface SomethingHappendEvent
+    {
+    }
+
+    public interface SomethingHappendEventDude
+    {
+    }
+}
+
+namespace MediaLoanLibrary.Fines.DomainModel.Events
 {
     public interface SomethingHappendEvent
     {
