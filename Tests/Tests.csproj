@@ -48,7 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Bus\DummyTypes.cs" />
+    <Compile Include="Common\Bus\UnobtrusiveMessageConventions.cs" />
+    <Compile Include="Common\Bus\WhenUsingUnobtrisiveMessageConventionsToIdentifyCommands.cs" />
     <Compile Include="Common\Bus\WhenUsingUnobtrisiveMessageConventionsToIdentifyEvents.cs" />
+    <Compile Include="Common\Bus\WhenUsingUnobtrisiveMessageConventionsToIdentifyMessagesBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
