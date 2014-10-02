@@ -1,9 +1,9 @@
 ﻿using System;
-using MediaLoanLIbrary.Fines.PublicEvents;
+using MediaLoanLibrary.Fines.PublicEvents;
 using NUnit.Framework;
 using Should;
 
-namespace MediaLoanLIbrary.Fines.Tests.Common.Bus
+namespace MediaLoanLibrary.Fines.Tests.Common.Bus
 {
     [TestFixture]
     public class WhenUsingUnobtrisiveMessageConventionsToIdentifyEvents
@@ -27,9 +27,15 @@ namespace MediaLoanLIbrary.Fines.Tests.Common.Bus
         }
 
         [Test]
-        public void ShouldNotMatchOnEventwithoutNamespace()
+        public void ShouldNotMatchOnEventWithoutNamespace()
         {
             ExecuteEventsDefinitionOnType(typeof(SomethingWithoutNamespaceHappendEvent)).ShouldBeFalse();
+        }
+
+        [Test]
+        public void ShouldNotMatchOnEventFromSomeWildlyOtherNamespace()
+        {
+            ExecuteEventsDefinitionOnType(typeof(Twitter.Fines.PublicEvents.SomethingHappendEvent)).ShouldBeFalse();
         }
 
         private bool ExecuteEventsDefinitionOnType(Type type)
@@ -46,6 +52,7 @@ namespace MediaLoanLIbrary.Fines.Tests.Common.Bus
             {
                 return type =>
                     type.Namespace != null &&
+                    type.Namespace.StartsWith("MediaLoanLibrary.") &&
                     type.Namespace.Contains(".PublicEvents") &&
                     type.Name.EndsWith("Event");
             }
@@ -53,7 +60,7 @@ namespace MediaLoanLIbrary.Fines.Tests.Common.Bus
     }
 }
 
-namespace MediaLoanLIbrary.Fines.PublicEvents
+namespace MediaLoanLibrary.Fines.PublicEvents
 {
     public interface SomethingHappendEvent
     {
@@ -64,7 +71,14 @@ namespace MediaLoanLIbrary.Fines.PublicEvents
     }
 }
 
-namespace MediaLoanLIbrary.Fines.DomainModel
+namespace Twitter.Fines.PublicEvents
+{
+    public interface SomethingHappendEvent
+    {
+    }
+}
+
+namespace MediaLoanLibrary.Fines.DomainModel
 {
     public interface SomethingHappendEvent
     {
