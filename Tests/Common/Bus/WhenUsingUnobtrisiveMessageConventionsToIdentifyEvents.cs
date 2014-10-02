@@ -1,4 +1,5 @@
 ﻿using System;
+using MediaLoanLibrary.Fines.DomainModel.Commands;
 using MediaLoanLibrary.Fines.PublicEvents;
 using NUnit.Framework;
 using Should;
@@ -50,6 +51,12 @@ namespace MediaLoanLibrary.Fines.Tests.Common.Bus
             ExecuteEventsDefinitionOnType(typeof(Twitter.Fines.PublicEvents.SomethingHappendEvent)).ShouldBeFalse();
         }
 
+        [Test]
+        public void ShouldNotMatchOnCommand()
+        {
+            ExecuteEventsDefinitionOnType(typeof(DoSomethingCommand)).ShouldBeFalse();
+        }
+
         private bool ExecuteEventsDefinitionOnType(Type type)
         {
             return UnobtrusiveMessageConventions.EventsDefinition(type);
@@ -93,6 +100,13 @@ namespace MediaLoanLibrary.Fines.DomainModel.Events
     }
 
     public interface SomethingHappendEventDude
+    {
+    }
+}
+
+namespace MediaLoanLibrary.Fines.DomainModel.Commands
+{
+    public class DoSomethingCommand
     {
     }
 }
