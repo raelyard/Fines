@@ -50,18 +50,11 @@ namespace MediaLoanLIbrary.Fines.Specifications.Support
         public string Originator { get; set; }
         public string OriginalMessageId { get; set; }
 
-        public int LoanId { get; set; }
+        public Guid LoanId { get; set; }
     }
 
     public class FineAccumulationIncrementTimeout
     {
         public int DaysOverdue { get; set; }
-    }
-}
-
-namespace MediaLoanLibrary.Fines.DomainModel.Events
-{
-    public interface FineCalculatedEvent
-    {
     }
 }
