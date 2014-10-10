@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Specifications.Support
+namespace MediaLoanLIbrary.Fines.Specifications.Support
 {
     public class OverdueLoanFineCalculationExecutor
     {

@@ -1,8 +1,9 @@
 ﻿using System;
-using MediaLoanLibrary.Fines.DomainModel.Commands;
-using MediaLoanLibrary.Fines.PublicEvents;
+using MediaLoanLIbrary.Fines.Common.Bus;
+using MediaLoanLibrary.Fines.DomainModel;
 using NUnit.Framework;
 using Should;
+using SomethingHappendEvent = MediaLoanLibrary.Fines.PublicEvents.SomethingHappendEvent;
 
 namespace MediaLoanLibrary.Fines.Tests.Common.Bus
 {
@@ -18,7 +19,7 @@ namespace MediaLoanLibrary.Fines.Tests.Common.Bus
         [Test]
         public void ShouldMatchOnInternalFinesEventType()
         {
-            ExecuteEventsDefinitionOnType(typeof(DomainModel.Events.SomethingHappendEvent)).ShouldBeTrue();
+            ExecuteEventsDefinitionOnType(typeof(DomainModel.Messages.Events.SomethingHappendEvent)).ShouldBeTrue();
         }
 
         [Test]

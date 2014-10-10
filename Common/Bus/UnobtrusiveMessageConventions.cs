@@ -1,6 +1,6 @@
 using System;
 
-namespace MediaLoanLibrary.Fines.Tests.Common.Bus
+namespace MediaLoanLIbrary.Fines.Common.Bus
 {
     public class UnobtrusiveMessageConventions
     {

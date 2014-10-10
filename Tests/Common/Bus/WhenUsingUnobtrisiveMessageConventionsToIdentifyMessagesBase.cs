@@ -1,5 +1,5 @@
 ﻿using System;
-using MediaLoanLibrary.Fines.DomainModel.Commands;
+using MediaLoanLibrary.Fines.DomainModel.Messages.Commands;
 using MediaLoanLibrary.Fines.PublicEvents;
 using NUnit.Framework;
 using Should;
@@ -19,7 +19,7 @@ namespace MediaLoanLibrary.Fines.Tests.Common.Bus
         [Test]
         public void ShouldNotMatchOnInternalFinesEventTypeNotEndingWithEvent()
         {
-            ExecuteMessagesDefinitionOnType(typeof(DomainModel.Events.SomethingHappendEventDude)).ShouldBeFalse();
+            ExecuteMessagesDefinitionOnType(typeof(DomainModel.Messages.Events.SomethingHappendEventDude)).ShouldBeFalse();
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace MediaLoanLibrary.Fines.Tests.Common.Bus
         [Test]
         public void ShouldNotMatchOnCommandFromSomeWildlyOtherNamespace()
         {
-            ExecuteMessagesDefinitionOnType(typeof(Twitter.Fines.DomainModel.Commands.DoSomethingCommand)).ShouldBeFalse();
+            ExecuteMessagesDefinitionOnType(typeof(Twitter.Fines.DomainModel.Messages.Commands.DoSomethingCommand)).ShouldBeFalse();
         }
     }
 }

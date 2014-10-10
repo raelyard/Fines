@@ -1,5 +1,6 @@
 ﻿using System;
-using MediaLoanLibrary.Fines.DomainModel.Commands;
+using MediaLoanLIbrary.Fines.Common.Bus;
+using MediaLoanLibrary.Fines.DomainModel.Messages.Commands;
 using MediaLoanLibrary.Fines.PublicEvents;
 using NUnit.Framework;
 using Should;
@@ -24,7 +25,7 @@ namespace MediaLoanLibrary.Fines.Tests.Common.Bus
         [Test]
         public void ShouldNotMatchOnInternalFinesEventType()
         {
-            ExecuteCommandsDefinitionOnType(typeof(DomainModel.Events.SomethingHappendEvent)).ShouldBeFalse();
+            ExecuteCommandsDefinitionOnType(typeof(DomainModel.Messages.Events.SomethingHappendEvent)).ShouldBeFalse();
         }
 
         protected override bool ExecuteMessagesDefinitionOnType(Type type)

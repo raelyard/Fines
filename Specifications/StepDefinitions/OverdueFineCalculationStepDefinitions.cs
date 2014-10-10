@@ -1,8 +1,8 @@
-﻿using Should;
-using Specifications.Support;
+﻿using MediaLoanLIbrary.Fines.Specifications.Support;
+using Should;
 using TechTalk.SpecFlow;
 
-namespace Specifications.StepDefinitions
+namespace MediaLoanLIbrary.Fines.Specifications.StepDefinitions
 {
     [Binding]
     public class OverdueFineCalculationStepDefinitions

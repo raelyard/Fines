@@ -9,7 +9,7 @@
     }
 }
 
-namespace MediaLoanLibrary.Fines.DomainModel.Events
+namespace MediaLoanLibrary.Fines.DomainModel.Messages.Events
 {
     public interface SomethingHappendEvent
     {
@@ -20,7 +20,7 @@ namespace MediaLoanLibrary.Fines.DomainModel.Events
     }
 }
 
-namespace MediaLoanLibrary.Fines.DomainModel.Commands
+namespace MediaLoanLibrary.Fines.DomainModel.Messages.Commands
 {
     public class DoSomethingCommand
     {
@@ -38,7 +38,7 @@ namespace Twitter.Fines.PublicEvents
     }
 }
 
-namespace Twitter.Fines.DomainModel.Commands
+namespace Twitter.Fines.DomainModel.Messages.Commands
 {
     public class DoSomethingCommand
     {

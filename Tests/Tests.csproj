@@ -30,8 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MediaLoanLibrary.Loans.PublicEvents">
+      <HintPath>..\packages\MediaLoanLibrary.Loans.PublicEvents.0.0.0.0\lib\net451\MediaLoanLibrary.Loans.PublicEvents.dll</HintPath>
+    </Reference>
     <Reference Include="NServiceBus.Core">
       <HintPath>..\packages\NServiceBus.5.0.0\lib\net45\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Testing">
+      <HintPath>..\packages\NServiceBus.Testing.5.0.0\lib\net45\NServiceBus.Testing.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -49,11 +55,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Bus\DummyTypes.cs" />
-    <Compile Include="Common\Bus\UnobtrusiveMessageConventions.cs" />
     <Compile Include="Common\Bus\WhenUsingUnobtrisiveMessageConventionsToIdentifyCommands.cs" />
     <Compile Include="Common\Bus\WhenUsingUnobtrisiveMessageConventionsToIdentifyEvents.cs" />
     <Compile Include="Common\Bus\WhenUsingUnobtrisiveMessageConventionsToIdentifyMessagesBase.cs" />
+    <Compile Include="DomainModel\Policies\OverdueFineAccumulationPolicyTests\WhenHandlingLoanConsumatedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\TestBusInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -62,6 +69,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{7E6AD9DB-631F-4D22-A50C-1D26AE88DA12}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DomainModel\DomainModel.csproj">
+      <Project>{340B7973-DAAC-4368-8F36-3E21F270A2FD}</Project>
+      <Name>DomainModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
