@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using MediaLoanLibrary.Fines.PublicEvents;
 using MediaLoanLibrary.Loans.PublicEvents;
 using NServiceBus;
@@ -39,6 +40,8 @@ namespace MediaLoanLibrary.Fines.Specifications.Support.Integration
         private void Initialize()
         {
             SpecificationsFineCalculatedEventHandler.FineCalculatedEvents.Clear();
+
+            ConfigureApplicationForImmediateTimeouts(true);
 
             _finesProcessorHostInstallationProcess.Start();
             _bus.Subscribe<FineCalculatedEvent>();
@@ -90,8 +93,20 @@ namespace MediaLoanLibrary.Fines.Specifications.Support.Integration
             return new Process {StartInfo = new ProcessStartInfo(@"..\..\..\Processor\bin\Debug\NServiceBus.Host.exe", arguments)};
         }
 
+        private void ConfigureApplicationForImmediateTimeouts(bool immediate)
+        {
+            const string applicationConfigFile = @"..\..\..\Processor\bin\Debug\MediaLoanLibrary.Fines.Processor.dll.config";
+            var document = XDocument.Load(applicationConfigFile);
+
+            document.Root.Element("appSettings").Elements().First(element => element.Attribute("key").Value == "ImmediateTimeouts").Attribute("value").SetValue(immediate.ToString());
+
+            // Save the new setting
+            document.Save(applicationConfigFile);
+        }
+
         public void Dispose()
         {
+            ConfigureApplicationForImmediateTimeouts(false);
             if (_finesProcessorHostProcess != null && !_finesProcessorHostProcess.HasExited)
             {
                 _finesProcessorHostProcess.CloseMainWindow();
