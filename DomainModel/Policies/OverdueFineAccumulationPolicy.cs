@@ -1,16 +1,35 @@
 using System;
+using System.Configuration;
 using MediaLoanLibrary.Fines.DomainModel.Messages.Commands;
 using MediaLoanLibrary.Loans.PublicEvents;
 using NServiceBus.Saga;
 
-namespace MediaLoanLIbrary.Fines.Specifications.Support
+namespace MediaLoanLibrary.Fines.DomainModel.Policies
 {
     public class OverdueFineAccumulationPolicy : Saga<OverdueFineAccumulationPolicyState>, IAmStartedByMessages<LoanConsumatedEvent>, IHandleTimeouts<FineAccumulationIncrementTimeout>
     {
-        private const int DefaultLoanTermDays = 21;
         private const int GracePeriodDays = 2;
         private const int FirstOverdueCalculationDaysOverdue = GracePeriodDays + 1;
         private const int ReplacementTimeframeDays = 30;
+
+        private readonly int _dailyIncrementDays;
+        private readonly Func<DateTime, DateTime> _getfirstOverdueCalculationTimeoutDate;
+
+        public OverdueFineAccumulationPolicy()
+        {
+            var immediateTimeouts = false;
+            bool.TryParse(ConfigurationManager.AppSettings["ImmediateTimeouts"], out immediateTimeouts);
+            if (immediateTimeouts)
+            {
+                _dailyIncrementDays = 0;
+                _getfirstOverdueCalculationTimeoutDate = dueDate => DateTime.Now;
+            }
+            else
+            {
+                _dailyIncrementDays = 1;
+                _getfirstOverdueCalculationTimeoutDate = duedate => duedate.AddDays(FirstOverdueCalculationDaysOverdue);
+            }
+        }
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<OverdueFineAccumulationPolicyState> mapper)
         {
@@ -20,27 +39,32 @@ namespace MediaLoanLIbrary.Fines.Specifications.Support
         public void Handle(LoanConsumatedEvent theEvent)
         {
             Data.LoanId = theEvent.LoanId;
-            RequestTimeout<FineAccumulationIncrementTimeout>(DateTime.Today.AddDays(DefaultLoanTermDays + FirstOverdueCalculationDaysOverdue), timeout => timeout.DaysOverdue = FirstOverdueCalculationDaysOverdue);
+            RequestTimeout<FineAccumulationIncrementTimeout>(_getfirstOverdueCalculationTimeoutDate(theEvent.DueDate), timeout => timeout.DaysOverdue = FirstOverdueCalculationDaysOverdue);
         }
 
         public void Timeout(FineAccumulationIncrementTimeout state)
         {
-            CalcualteCurrentFine(state.DaysOverdue);
+            CalculateCurrentFine(state.DaysOverdue);
+            RequestNextFineCalculationOrCompletePolicy(state.DaysOverdue);
         }
 
-        private void CalcualteCurrentFine(int daysOverdue)
+        private void CalculateCurrentFine(int daysOverdue)
         {
             Bus.Send<CalculateFineCommand>(command =>
             {
                 command.LoanId = Data.LoanId;
                 command.DaysOverdue = daysOverdue;
             });
+        }
+
+        private void RequestNextFineCalculationOrCompletePolicy(int daysOverdue)
+        {
             if (daysOverdue >= ReplacementTimeframeDays)
             {
                 MarkAsComplete();
                 return;
             }
-            RequestTimeout<FineAccumulationIncrementTimeout>(TimeSpan.FromDays(1), timeout => timeout.DaysOverdue = daysOverdue + 1);
+            RequestTimeout<FineAccumulationIncrementTimeout>(TimeSpan.FromDays(_dailyIncrementDays), timeout => timeout.DaysOverdue = daysOverdue + 1);
         }
     }
 

@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace MediaLoanLIbrary.Fines.Specifications.Features
+namespace MediaLoanLibrary.Fines.Specifications.Features
 {
     using TechTalk.SpecFlow;
     
@@ -20,6 +20,7 @@ namespace MediaLoanLIbrary.Fines.Specifications.Features
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("Overdue Fine Calculation Execution")]
+    [NUnit.Framework.CategoryAttribute("ExecutesProcessorInIntegrationMode")]
     public partial class OverdueFineCalculationExecutionFeature
     {
         
@@ -32,8 +33,9 @@ namespace MediaLoanLIbrary.Fines.Specifications.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Overdue Fine Calculation Execution", "In order to inform library patrons of their current fines\nAs a library operator\nI" +
-                    " want to calculate updated fines on a daily basis", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Overdue Fine Calculation Execution", "In order to inform library patrons of their current fines\r\nAs a library operator\r" +
+                    "\nI want to calculate updated fines on a daily basis", ProgrammingLanguage.CSharp, new string[] {
+                        "ExecutesProcessorInIntegrationMode"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -72,15 +74,15 @@ namespace MediaLoanLIbrary.Fines.Specifications.Features
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate Fine Daily Starting on the Third Day After the Due Date And Continuing " +
                     "Until the Thirtieth Day", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("A loan has been established", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.When("The third day following the due date has arrived", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("A loan has been established", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.Then("the fine should begin daily calculation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("The third day following the due date has arrived", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
+ testRunner.Then("the fine should begin daily calculation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 11
  testRunner.And("the daily calculation should stop after the thirtieth day after the due date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

@@ -1,7 +1,7 @@
 ﻿using MediaLoanLIbrary.Fines.Common.Bus;
 using NServiceBus.Testing;
 
-namespace MediaLoanLIbrary.Fines.Specifications.Support
+namespace MediaLoanLibrary.Fines.Specifications.Support
 {
     public class TestBusInitializer
     {

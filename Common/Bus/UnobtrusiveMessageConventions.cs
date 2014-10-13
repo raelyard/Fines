@@ -1,8 +1,9 @@
 using System;
+using NServiceBus;
 
 namespace MediaLoanLIbrary.Fines.Common.Bus
 {
-    public class UnobtrusiveMessageConventions
+    public class UnobtrusiveMessageConventions : INeedInitialization
     {
         public static Func<Type, bool> EventsDefinition
         {
@@ -29,6 +30,11 @@ namespace MediaLoanLIbrary.Fines.Common.Bus
                      type.Namespace.Contains(".Commands") &&
                      type.Name.EndsWith("Command"));
             }
+        }
+
+        public void Customize(BusConfiguration configuration)
+        {
+            configuration.Conventions().DefiningEventsAs(EventsDefinition).DefiningCommandsAs(CommandsDefinition);
         }
     }
 }

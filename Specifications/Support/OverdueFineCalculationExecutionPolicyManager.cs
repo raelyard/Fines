@@ -1,59 +1,55 @@
-﻿using System;
-using MediaLoanLibrary.Fines.DomainModel.Messages.Commands;
-using MediaLoanLibrary.Loans.PublicEvents;
-using NServiceBus.Testing;
+﻿using System.Configuration;
+using System.Security.Policy;
+using MediaLoanLIbrary.Fines.Common.Bus;
+using MediaLoanLibrary.Fines.Specifications.Support.Integration;
+using MediaLoanLibrary.Fines.Specifications.Support.Model;
+using NServiceBus;
+using NServiceBus.Features;
 
-namespace MediaLoanLIbrary.Fines.Specifications.Support
+namespace MediaLoanLibrary.Fines.Specifications.Support
 {
-    public class OverdueFineCalculationExecutionPolicyManager
+    public interface OverdueFineCalculationExecutionPolicyManager
     {
-        private const int DefaultLoanTermDays = 21;
-        private const int GracePeriodDays = 2;
+        OverdueFineCalculationExecutionPolicyManager EstablishLoan();
+        OverdueFineCalculationExecutionPolicyManager EstablishActionContext();
+        OverdueFineCalculationExecutionPolicyManager ExpectDailyCalculation();
+        OverdueFineCalculationExecutionPolicyManager ExpectDailyCalculationToStop();
+    }
 
-        private readonly Guid _loanId = Guid.NewGuid();
+    public class OverdueFineCalculationExecutionTestContext
+    {
+        public OverdueFineCalculationExecutionPolicyManager Manager { get; private set; }
 
-        private Saga<OverdueFineAccumulationPolicy> _loanDuePolicySagaTester;
-        private DateTime _dueDate;
-
-        public OverdueFineCalculationExecutionPolicyManager EstablishLoan()
+        public OverdueFineCalculationExecutionTestContext()
         {
-            TestBusInitializer.Initialize();
-            _dueDate = DateTime.Today.AddDays(DefaultLoanTermDays);
-            _loanDuePolicySagaTester = Test.Saga<OverdueFineAccumulationPolicy>();
-            return this;
-        }
-
-        public OverdueFineCalculationExecutionPolicyManager EstablishActionContext()
-        {
-            _loanDuePolicySagaTester
-                .ExpectTimeoutToBeSetAt<FineAccumulationIncrementTimeout>((timeout, timeoutDate) => timeoutDate == _dueDate.AddDays(GracePeriodDays + 1) && timeout.DaysOverdue == GracePeriodDays + 1)
-                .When(saga => saga.Handle(Test.CreateInstance<LoanConsumatedEvent>(newEvent =>
-                {
-                    newEvent.LoanId = _loanId;
-                    newEvent.DueDate = _dueDate;
-                })));
-
-            return this;
-        }
-
-        public OverdueFineCalculationExecutionPolicyManager ExpectDailyCalculation()
-        {
-            for (var i = 3; i < 30; ++i)
+            switch (ConfigurationManager.AppSettings["ExecuteSpecificationsLevel"])
             {
-                _loanDuePolicySagaTester
-                        .ExpectSend<CalculateFineCommand>(command => command.LoanId == _loanId && command.DaysOverdue == i)
-                        .ExpectTimeoutToBeSetIn<FineAccumulationIncrementTimeout>((timeout, timeoutTimespan) => timeoutTimespan == TimeSpan.FromDays(1) && timeout.DaysOverdue == i + 1)
-                    .WhenSagaTimesOut();
+                case "Integration":
+                    Manager = new MessageHandlingOverdueFineCalculationExecutionPolicyManager(ConfigureNServiceBus());
+                    break;
+                default:
+                    Manager = new NServiceBusUnitTestingOverdueFineCalculationExecutionPolicyManager();
+                    break;
             }
-            return this;
         }
 
-        public OverdueFineCalculationExecutionPolicyManager ExpectDailyCalculationToStop()
+        private IBus ConfigureNServiceBus()
         {
-            _loanDuePolicySagaTester
-                .WhenSagaTimesOut()
-                .AssertSagaCompletionIs(true);
-            return this;
+            var configuration = new BusConfiguration();
+            configuration.AssembliesToScan(AllAssemblies.Except("MediaLoanLIbrary.Fines.Common"));
+            configuration.EndpointName("IntegrationTesting");
+            configuration.DisableFeature<Sagas>();
+            configuration.DisableFeature<TimeoutManager>();
+            configuration.DisableFeature<AutoSubscribe>();
+            configuration.DisableFeature<InMemorySubscriptionPersistence>();
+            configuration.DisableFeature<StorageDrivenPublishing>();
+            configuration.UsePersistence<InMemoryPersistence>();
+            configuration.PurgeOnStartup(true);
+            configuration.Conventions()
+                .DefiningCommandsAs(type => UnobtrusiveMessageConventions.CommandsDefinition(type) || (UnobtrusiveMessageConventions.EventsDefinition(type) && type.Namespace.Contains(".Loans.")))
+                .DefiningEventsAs(type => UnobtrusiveMessageConventions.EventsDefinition(type) && !type.Namespace.Contains(".Loans."));
+            configuration.EnableInstallers();
+            return Bus.Create(configuration).Start();
         }
     }
 }

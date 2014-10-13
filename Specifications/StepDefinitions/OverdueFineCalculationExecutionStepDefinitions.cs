@@ -1,16 +1,17 @@
-﻿using MediaLoanLIbrary.Fines.Specifications.Support;
+﻿using System;
+using MediaLoanLibrary.Fines.Specifications.Support;
 using TechTalk.SpecFlow;
 
-namespace MediaLoanLIbrary.Fines.Specifications.StepDefinitions
+namespace MediaLoanLibrary.Fines.Specifications.StepDefinitions
 {
     [Binding]
     public class OverdueFineCalculationExecutionStepDefinitions
     {
         private readonly OverdueFineCalculationExecutionPolicyManager _manager;
 
-        public OverdueFineCalculationExecutionStepDefinitions(OverdueFineCalculationExecutionPolicyManager manager)
+        public OverdueFineCalculationExecutionStepDefinitions(OverdueFineCalculationExecutionTestContext context)
         {
-            _manager = manager;
+            _manager = context.Manager;
         }
 
         [Given(@"A loan has been established")]
@@ -35,6 +36,16 @@ namespace MediaLoanLIbrary.Fines.Specifications.StepDefinitions
         public void ThenTheDailyCalculationShouldStopAfterTheThirtiethDayAfterTheDueDate()
         {
             _manager.ExpectDailyCalculationToStop();
+        }
+
+        [AfterScenario("ExecutesProcessorInIntegrationMode")]
+        public void Cleanup()
+        {
+            var disposableManager = _manager as IDisposable;
+            if (disposableManager != null)
+            {
+                disposableManager.Dispose();
+            }
         }
     }
 }

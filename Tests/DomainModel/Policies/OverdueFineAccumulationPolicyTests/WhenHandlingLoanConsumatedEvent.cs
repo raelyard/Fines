@@ -1,5 +1,5 @@
 ﻿using System;
-using MediaLoanLIbrary.Fines.Specifications.Support;
+using MediaLoanLibrary.Fines.DomainModel.Policies;
 using MediaLoanLIbrary.Fines.Tests.Support;
 using MediaLoanLibrary.Loans.PublicEvents;
 using NServiceBus.Testing;
@@ -17,9 +17,13 @@ namespace MediaLoanLIbrary.Fines.Tests.DomainModel.Policies.OverdueFineAccumulat
         public void ShouldSetLoanIdOnState()
         {
             TestBusInitializer.Initialize();
-            var saga = new OverdueFineAccumulationPolicy{};
+            var saga = new OverdueFineAccumulationPolicy();
             Test.Saga(saga);
-            saga.Handle(Test.CreateInstance<LoanConsumatedEvent>(theEvent => theEvent.LoanId = _loanId));
+            saga.Handle(Test.CreateInstance<LoanConsumatedEvent>(theEvent =>
+            {
+                theEvent.LoanId = _loanId;
+                theEvent.DueDate = DateTime.Today;
+            }));
             saga.Data.LoanId.ShouldEqual(_loanId);
         }
     }

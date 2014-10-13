@@ -1,9 +1,13 @@
 ﻿using System;
+using MediaLoanLibrary.Fines.DomainModel.Calculator;
 
-namespace MediaLoanLIbrary.Fines.Specifications.Support
+namespace MediaLoanLibrary.Fines.Specifications.Support
 {
     public class OverdueLoanFineCalculationExecutor
     {
+        private DateTime _loanDueDate;
+        private decimal _replacementValue;
+
         public void SetLoanOverdueContext(int days, decimal replacementValue)
         {
             _loanDueDate = DateTime.Today.AddDays(-days);
@@ -12,29 +16,8 @@ namespace MediaLoanLIbrary.Fines.Specifications.Support
 
         public decimal CalculateOverdueFine()
         {
-            return CalculateOverdueFine(DateTime.Today);
-        }
-
-
-        private const int GracePeriodDays = 2;
-        private const decimal FinePerDay = 0.25m;
-        private const decimal ReplacementTimeframeDays = 30;
-
-        private DateTime _loanDueDate;
-        private decimal _replacementValue;
-
-        private decimal CalculateOverdueFine(DateTime targetDate)
-        {
-            var daysOverdue = (targetDate - _loanDueDate).Days;
-            if (daysOverdue <= GracePeriodDays)
-            {
-                return 0;
-            }
-            if (daysOverdue >= ReplacementTimeframeDays)
-            {
-                return _replacementValue;
-            }
-            return Math.Min(daysOverdue * FinePerDay, _replacementValue);
+            var calculator = new FineCalculator();
+            return calculator.CalculateOverdueFine((DateTime.Today - _loanDueDate).Days, _replacementValue);
         }
     }
 }

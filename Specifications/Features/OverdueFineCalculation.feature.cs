@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace MediaLoanLIbrary.Fines.Specifications.Features
+namespace MediaLoanLibrary.Fines.Specifications.Features
 {
     using TechTalk.SpecFlow;
     

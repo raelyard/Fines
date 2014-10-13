@@ -1,4 +1,5 @@
-﻿Feature: Overdue Fine Calculation Execution
+﻿@ExecutesProcessorInIntegrationMode
+Feature: Overdue Fine Calculation Execution
 	In order to inform library patrons of their current fines
 	As a library operator
 	I want to calculate updated fines on a daily basis
