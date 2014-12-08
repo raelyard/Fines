@@ -72,7 +72,7 @@ namespace MediaLoanLibrary.Fines.Specifications.Support.Integration
             SpecificationsFineCalculatedEventHandler.FineCalculatedEvents.Count(theEvent => theEvent.LoanId != LoanId).ShouldEqual(0);
             for (var expectedFine = 1m; expectedFine <= 7.25m; expectedFine = expectedFine + 0.25m)
             {
-                SpecificationsFineCalculatedEventHandler.FineCalculatedEvents.Any(theEvent => theEvent.FineAmount == expectedFine).ShouldBeTrue(string.Format("Didnt' fine an event with a fine of {0}", expectedFine));
+                SpecificationsFineCalculatedEventHandler.FineCalculatedEvents.Any(theEvent => theEvent.FineAmount == expectedFine).ShouldBeTrue(string.Format("Didn't find an event with a fine of {0}", expectedFine));
             }
             SpecificationsFineCalculatedEventHandler.FineCalculatedEvents.Last().FineAmount.ShouldEqual(9.95m);
             return this;
